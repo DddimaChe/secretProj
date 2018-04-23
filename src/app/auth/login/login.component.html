@@ -1,0 +1,32 @@
+<div
+  class="alert alert-{{message.type}}"
+  *ngIf="message.text"
+>
+  {{message.text}}
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="example-form">
+  <mat-form-field class="example-full-width">
+  <input matInput placeholder="Email" [formControl]="form.controls['emailFormControl']"
+         >
+    <mat-error *ngIf="form.controls['emailFormControl'].hasError('email') && !form.controls['emailFormControl'].hasError('required')">
+    Please enter a valid email address
+  </mat-error>
+    <mat-error *ngIf="form.controls['emailFormControl'].hasError('required')">
+    Email is <strong>required</strong>
+  </mat-error>
+</mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Password" [formControl]="form.controls['passwordFormControl']"
+           [errorStateMatcher]="matcher">
+    <mat-error *ngIf="form.controls['passwordFormControl'].hasError('minlength') && !form.controls['passwordFormControl'].hasError('required')">
+      Пароль должен быть больше 6 символов
+    </mat-error>
+    <mat-error *ngIf="form.controls['passwordFormControl'].hasError('required')">
+      Password is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <button type="submit" mat-raised-button color="primary">Войти</button>
+  <a mat-button color="primary" routerLink="/register">Регистрация</a>
+</form>
