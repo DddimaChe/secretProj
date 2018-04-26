@@ -7,8 +7,8 @@
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="Фамилия" [formControl]="form.controls['surnameFormControl']">
-    <mat-error *ngIf="form.controls['surnameFormControl'].hasError('required')">
+    <input matInput placeholder="Фамилия" [formControl]="form.controls['lastNameFormControl']">
+    <mat-error *ngIf="form.controls['lastNameFormControl'].hasError('required')">
       surname is <strong>required</strong>
     </mat-error>
   </mat-form-field>
@@ -27,7 +27,7 @@
 
   <mat-form-field class="example-full-width">
     <input matInput placeholder="Password" [formControl]="form.controls['passwordFormControl']"
-           [errorStateMatcher]="matcher">
+           [errorStateMatcher]="matcher" type="password">
     <mat-error *ngIf="form.controls['passwordFormControl'].hasError('minlength') && !form.controls['passwordFormControl'].hasError('required')">
       Пароль должен быть больше 6 символов
     </mat-error>
@@ -35,5 +35,5 @@
       Password is <strong>required</strong>
     </mat-error>
   </mat-form-field>
-  <button type="submit" mat-raised-button color="primary">Регистрация</button>
+  <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">Регистрация</button>
 </form>

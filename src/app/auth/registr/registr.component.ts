@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {User} from '../../user';
 import {LoginService} from '../../service/login.service';
-import {UsersService} from '../../service/users.service';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-registr',
@@ -17,47 +17,27 @@ export class RegistrComponent implements OnInit {
 
   constructor(private router: Router,
               private loginService: LoginService,
-              private usersService: UsersService) {
+            private auth: AuthService) {
   }
-
- /* registration(email: string, name: string, password: string, surname: string) {
-    email = email.trim();
-    password = password.trim();
-    name = name.trim();
-    surname = surname.trim();
-    this.loginService.registration({email, name, password, surname} as User)
-      .subscribe(user => {
-        this.user.push(user);
-      });
-  }
-  */
 
   onSubmit() {
-    const {email, password, name, surname } = this.form.value;
-    const user = new User();
+    const data = this.form.value;
+    const user = new User(data['emailFormControl'], 
+                          data['passwordFormControl'], 
+                          data['nameFormControl'], 
+                          data['lastNameFormControl'],
+                          'user');
 
-    this.usersService.createNewUser(user)
-      .subscribe(() => {
-        this.router.navigate(['/login'], {
-          queryParams: {
-            nowCanLogin: true
-          }
-        });
-      });
-  }
-
-
-    forbiddenEmails(control: FormControl): Promise<any> {
-      return new Promise((resolve, reject) => {
-        this.usersService.getUserByEmail(control.value)
-          .subscribe((user: User) => {
-            if (user) {
-              resolve({forbiddenEmail: true});
-            } else {
-              resolve(null);
-            }
-          });
-      });
+    this.loginService.registration(user)
+      .subscribe(res =>{
+        if (res['status'] == 'Ok'){
+          this.auth.login();
+          this.loginService.setToken(res['token']);
+          console.log(res['token']);
+        } else {
+          console.log("Email is busy");
+        }
+      });                      
   }
 
 
@@ -67,7 +47,7 @@ export class RegistrComponent implements OnInit {
         Validators.required,
       ]),
 
-      surnameFormControl: new FormControl('', [
+      lastNameFormControl: new FormControl('', [
         Validators.required,
       ]),
 

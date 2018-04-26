@@ -10,18 +10,27 @@ const httpOptions = {
 
 @Injectable()
 export class LoginService {
-  private url = 'http://localhost:4200/login/';
+  private url = 'http://localhost:8080/auth/';
+  private token = '';
 
   constructor(
     private http: HttpClient,
   ) {
   }
 
-
-  login(user: User): Observable<User> {
-    return this.http.post<User>(this.url, user, httpOptions);
+  login(user: User){
+    return this.http.post(this.url + 'login', user, httpOptions);
   }
-  registration(user: User): Observable<User> {
-    return this.http.post<User>(this.url, user, httpOptions);
+
+  registration(user: User){
+    return this.http.post(this.url + 'registration', user, httpOptions);
+  }
+
+  setToken(token: string){
+    this.token = token;
+  }
+
+  getToken(): string {
+    return this.token;
   }
 }

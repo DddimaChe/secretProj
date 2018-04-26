@@ -17,7 +17,6 @@ import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material
 import {LoginService} from './service/login.service';
 import {AuthService} from './service/auth.service';
 import {HttpClientModule} from '@angular/common/http';
-import {UsersService} from './service/users.service';
 
 
 @NgModule({
@@ -43,7 +42,6 @@ import {UsersService} from './service/users.service';
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
     LoginService,
     AuthService,
-    UsersService,
   ],
   bootstrap: [AppComponent]
 })
